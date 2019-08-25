@@ -1,0 +1,47 @@
+apply plugin: 'groovy'
+//应用maven插件来发布插件工件
+apply plugin: 'maven'
+apply plugin: 'java'
+
+repositories {
+//    mavenLocal()
+    jcenter()
+}
+
+//指定依赖
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+//    compile 'com.android.tools.build:gradle:3.4.1'
+
+}
+
+
+//指定代码和资源路径
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+
+/**
+ * 1.定义工件的group、name 和 version
+ * 发布插件到本地仓库
+ */
+
+uploadArchives {
+    repositories.mavenDeployer {
+        //发布插件到当前工程下../repo目录
+        repository(url: uri('../repo'))
+        pom.groupId = 'com.pre.im'
+        pom.artifactId = 'preuploader'
+        pom.version = '1.0.2'
+    }
+}
+
